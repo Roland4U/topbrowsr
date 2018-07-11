@@ -1,0 +1,29 @@
+{
+    "name": "top-browser",
+    "version": "1.0.0",
+    "description": "A minimal Electron internet browser application that always stays on top of your screen",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "rm -rf Top-Browser-darwin-x64 && electron-packager . Top-Browser && cp browser.icns Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/electron.icns && asar pack Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app.asar && rm -rf Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app"
+    },
+    "repository": "https://bitbucket.org/speedydemon/electron_top_browser/",
+    "keywords": [
+        "browser",
+        "always",
+        "on",
+        "top"
+    ],
+    "author": "Leandro Kim",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^2.0.0",
+        "asar": "^0.14.3",
+        "electron-packager": "^12.1.0"
+    },
+    "dependencies": {
+        "bootstrap": "^4.1.1",
+        "jquery": "^3.3.1",
+        "popper.js": "^1.14.3"
+    }
+}

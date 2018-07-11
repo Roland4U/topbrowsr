@@ -1,0 +1,42 @@
+#title-bar {
+	-webkit-app-region: drag;
+	height: 40px;
+	background-color: #d3d3d3;
+	padding: none;
+	margin: 0px;
+	display: none;
+	width: 100%;
+}
+
+webview {
+	width: 100%;
+	height: 100%;
+}
+
+#app {
+	width: 100%;
+	height: 100%;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body:hover #title-bar {
+    display: block;
+}
+
+body:hover webview {
+    height: calc(100% - 40px);
+}
+
+input {
+	width: 100%;
+	margin-top: 5px;
+}
+
+button {
+	margin-top: 5px;
+	cursor: pointer;
+}

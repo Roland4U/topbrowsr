@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Top Browser</title>
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./style.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<div id="title-bar" class="container-fluid">
+			<div class="row">
+				<div class="float-left">
+					<button type="button" v-on:click="back" :disabled="!canGoBack"><</button>
+				</div>
+				<div class="float-left">
+					<button type="button" v-on:click="forward" :disabled="!canGoForward">></button>
+				</div>
+				<div class="float-left">
+					<button type="button" v-on:click="reload">&#x21bb;</button>
+				</div>
+				<div class="col">
+					<input type="url" v-model="url" v-on:keyup.enter="go" placeholder="URL">
+				</div>
+				<div class="float-right">
+					<button type="button" v-on:click="minimize">-</button>
+				</div>
+				<div class="float-right">
+					<button type="button" v-on:click="exit">X</button>
+				</div>
+			</div>
+		</div>
+		<webview id="webview" :src="location" allowpopups></webview>
+	</div>
+	<script>
+		require('./renderer.js');
+	</script>
+</body>
+
+</html>
