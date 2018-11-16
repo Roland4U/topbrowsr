@@ -3,20 +3,25 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Top Browser</title>
 	<link rel="stylesheet" href="./style.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+	 crossorigin="anonymous">
 </head>
 
 <body>
 	<div id="vueApp">
-		<div>
-			<div>
-				<div>
-				</div>
-			</div>
+		<div class="menuBar" v-if="showMenuBar">
+			<!-- back, forward, stop, refresh, searchbar, exit, minimize, expand, bookmarks, history -->
 		</div>
-		<webview id="webview" :src="location" allowpopups></webview>
+		<div id="showBarButton" class="fadeInDown" v-on:click="showMenuBar=!showMenuBar">
+			<i class="fas fa-angle-down" v-if="!showMenuBar"></i>
+			<i class="fas fa-angle-up" v-if="showMenuBar"></i>
+			<!-- add message to know what it is-->
+		</div>
+		<webview id="webview" :src="currentLocation" allowpopups></webview>
 	</div>
 	<script>
 		require('./renderer.js');

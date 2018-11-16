@@ -6,11 +6,12 @@ const {
 	config = require("./config"),
 	bookmarks = require("./bookmarks"),
 	history = require("./history");
-console.log(config, config.homeUri);
+
 var vueApp = new Vue({
 	el: '#vueApp',
 	data: {
-		currentLocation: config.homeUri
+		currentLocation: config.homeUri,
+		showMenuBar: false
 	},
 	methods: {
 

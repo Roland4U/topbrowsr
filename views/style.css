@@ -1,0 +1,64 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+}
+
+body:hover .fadeInDown {
+    animation: fadeIn 0.5s linear 0s 1;
+    display: flex;
+}
+
+.fadeInDown {
+    display: none;
+}
+
+#vueApp {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100vh;
+    width: 100vw;
+}
+
+.menuBar {
+    -webkit-app-region: drag;
+    position: absolute;
+    height: 50px;
+    width: 100vw;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0.9;
+    background: gainsboro;
+    display: flex;
+    box-shadow: inset 0px 0px 30px lightslategrey;
+}
+
+#showBarButton {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer !important;
+    border-radius: 50%;
+    background-color: lightgray;
+    height: 20px;
+    width: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+#webview {
+    height: 100vh;
+    width: 100vw;
+}
+
+@keyframes fadeIn {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0px);
+        opacity: 0.7;
+    }
+}

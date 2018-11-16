@@ -1,13 +1,8 @@
 const json = require("./config.json");
-function config() { }
 
-config.prototype = {
+const config = {
     ...json,
-    changeConfigParam: function (key, value) {
-        return this;
-    }
+    //write config functions, etc
 };
 
-module.exports = () => {
-    return new config();
-};
+module.exports = config;
