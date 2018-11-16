@@ -14,6 +14,38 @@
 <body>
 	<div id="vueApp">
 		<div class="menuBar" v-if="showMenuBar">
+			<div class="topBar">
+				<div class="topButtons closeButton" v-on:click="exit">
+					<i class="fas fa-times"></i>
+				</div>
+				<div class="topButtons minimizeButton" v-on:click="minimize">
+					<i class="fas fa-minus"></i>
+				</div>
+				<div class="topButtons maximizeButton" v-on:click="maximize">
+					<i class="fas fa-expand"></i>
+				</div>
+			</div>
+			<div class="toolBar">
+				<div class="toolbarButtons backButton" v-on:click="">
+					<i class="fas fa-chevron-left"></i>
+				</div>
+				<div class="toolbarButtons forwardButton" v-on:click="">
+					<i class="fas fa-chevron-right"></i>
+				</div>
+				<div class="toolbarButtons reloadStopButton" v-on:click="">
+					<i class="fas fa-redo" v-if="!loading"></i>
+					<i class="fas fa-times" v-if="loading"></i>
+				</div>
+				<div class="toolbarInput">
+					<input type="url" v-model="currentLocation" placeholder="type a URL"/>
+				</div>
+				<div class="toolbarButtons bookmarksButton" v-on:click="showBookmarks">
+					<i class="far fa-bookmark"></i>
+				</div>
+				<div class="toolbarButtons historyButton" v-on:click="showHistory">
+					<i class="fas fa-history"></i>
+				</div>
+			</div>
 			<!-- back, forward, stop, refresh, searchbar, exit, minimize, expand, bookmarks, history -->
 		</div>
 		<div id="showBarButton" class="fadeInDown" v-on:click="showMenuBar=!showMenuBar">
