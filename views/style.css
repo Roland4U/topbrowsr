@@ -51,17 +51,19 @@ body:hover .fadeInDown {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: darkgrey;
+    font-size: 10px;
 }
 
-.closeButton {
+.closeButton:hover {
     background: orangered;
 }
 
-.minimizeButton {
+.minimizeButton:hover {
     background: yellow;
 }
 
-.maximizeButton {
+.maximizeButton:hover {
     background: lightgreen;
 }
 
@@ -74,9 +76,43 @@ body:hover .fadeInDown {
     border-bottom: 1px solid lightslategrey;
 }
 
+.toolbarButtons {
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    min-width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 5px 0px 5px;
+}
+
+.toolbarButtons:hover {
+    background: grey;
+}
+
+.toolbarInput {
+    width: 100%;
+    margin: 0px 5px 0px 5px;
+}
+
+#searchBar {
+    width: calc(100% - 30px);
+    border: 1px solid #d1d1d1;
+    font: bold 12px Arial,Helvetica,Sans-serif;
+    color: #bebebe;
+    padding: 6px 15px 6px 15px;
+    border-radius: 20px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+    transition: all 0.7s ease 0s;
+}
+
 #showBarButton {
     position: absolute;
-    top: 10px;
+    top: 0px;
     right: 20px;
     cursor: pointer;
     border-radius: 50%;

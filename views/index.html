@@ -26,18 +26,18 @@
 				</div>
 			</div>
 			<div class="toolBar">
-				<div class="toolbarButtons backButton" v-on:click="">
+				<div class="toolbarButtons backButton" v-on:click="back" :disabled="!canGoBack">
 					<i class="fas fa-chevron-left"></i>
 				</div>
-				<div class="toolbarButtons forwardButton" v-on:click="">
+				<div class="toolbarButtons forwardButton" v-on:click="forward" :disabled="!canGoForward">
 					<i class="fas fa-chevron-right"></i>
 				</div>
-				<div class="toolbarButtons reloadStopButton" v-on:click="">
+				<div class="toolbarButtons reloadStopButton" v-on:click="reloadStop">
 					<i class="fas fa-redo" v-if="!loading"></i>
 					<i class="fas fa-times" v-if="loading"></i>
 				</div>
 				<div class="toolbarInput">
-					<input type="url" v-model="currentLocation" placeholder="type a URL"/>
+					<input id="searchBar" type="url" v-model="currentLocation" placeholder="Type a URL" />
 				</div>
 				<div class="toolbarButtons bookmarksButton" v-on:click="showBookmarks">
 					<i class="far fa-bookmark"></i>
@@ -46,7 +46,6 @@
 					<i class="fas fa-history"></i>
 				</div>
 			</div>
-			<!-- back, forward, stop, refresh, searchbar, exit, minimize, expand, bookmarks, history -->
 		</div>
 		<div id="showBarButton" class="fadeInDown" v-on:click="showMenuBar=!showMenuBar">
 			<i class="fas fa-angle-down" v-if="!showMenuBar"></i>
