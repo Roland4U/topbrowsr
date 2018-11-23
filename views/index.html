@@ -24,14 +24,15 @@
 				<div class="topButtons maximizeButton" v-on:click="maximize">
 					<i class="fas fa-expand"></i>
 				</div>
+				<div class="draggable"></div>
 			</div>
 			<div class="toolBar">
-				<div class="toolbarButtons backButton" v-on:click="back" :disabled="!canGoBack">
+				<button class="toolbarButtons backButton" type="button" v-on:click="back" :disabled="!canGoBack">
 					<i class="fas fa-chevron-left"></i>
-				</div>
-				<div class="toolbarButtons forwardButton" v-on:click="forward" :disabled="!canGoForward">
+				</button>
+				<button class="toolbarButtons forwardButton" type="button" v-on:click="forward" :disabled="!canGoForward">
 					<i class="fas fa-chevron-right"></i>
-				</div>
+				</button>
 				<div class="toolbarButtons reloadStopButton" v-on:click="reloadStop">
 					<i class="fas fa-redo" v-if="!loading"></i>
 					<i class="fas fa-times" v-if="loading"></i>
@@ -52,7 +53,7 @@
 			<i class="fas fa-angle-up" v-if="showMenuBar"></i>
 			<!-- add message to know what it is-->
 		</div>
-		<webview id="webview" :src="currentLocation" allowpopups></webview>
+		<webview id="webview" :src="currentLocation" allowpopups webpreferences="nativeWindowOpen=true" plugins></webview>
 	</div>
 	<script>
 		require('./renderer.js');

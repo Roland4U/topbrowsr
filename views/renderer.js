@@ -1,5 +1,5 @@
 window.$ = window.jQuery = require('jquery');
-
+var webview;
 const {
 	remote
 } = require('electron'),
@@ -36,12 +36,15 @@ var vueApp = new Vue({
 		},
 		back: function () {
 			webview.goBack();
+			bookmarks.saveBookmark("title",this.currentLocation, function(asd){
+				console.log("well?", asd);
+			});
 		},
 		forward: function () {
 			webview.goForward();
 		},
 		reloadStop: function () {
-			if (webview.isLoading() || webview.isWaitingForResponse()) {
+			if (webview.isLoading()) {
 				webview.stop();
 			} else {
 				webview.reload();
@@ -51,48 +54,45 @@ var vueApp = new Vue({
 
 		},
 		showHistory: function () {
-
+			
 		}
 	}
 });
 
 onload = () => {
-	var webview = document.querySelector('webview');
+	webview = document.querySelector('webview');
 
 	webview.addEventListener('load-commit', function (event, asd) {
-		if (webview.isLoading() || webview.isWaitingForResponse()) {
-			vueApp.loading = true;
-		} else {
-			vueApp.loading = false;
-		}
+		refreshValues('load-commit');
 	});
 
 	webview.addEventListener('did-finish-load', function (event) {
-		vueApp.loading = false;
+		refreshValues('did-finish-load');
 	});
 
-	webview.addEventListener('did-fail-load', function (event) {
-		vueApp.loading = false;
+	webview.addEventListener('did-stop-loading', function (event) {
+		refreshValues('did-stop-loading');
 	});
-	
-	webview.addEventListener('will-navigate', function(event) {
-		vueApp.loading = true;
-		vueApp.currentLocation = event.url;
-	});
-	
-	webview.addEventListener('did-navigate', function(event) {
-		vueApp.loading = true;
-		vueApp.currentLocation = event.url;
+
+	webview.addEventListener('will-navigate', function (event) {
+		refreshValues('will-navigate');
+		refreshUri(event, 'will-navigate');
 	});
 
 	webview.addEventListener('did-navigate', function (event) {
-		vueApp.currentLocation = event.url;
-		vueApp.canGoBack = webview.canGoBack();
-		vueApp.canGoForward = webview.canGoForward();
+		refreshValues('did-navigate');
+	});
+
+	webview.addEventListener('did-navigate-in-page', function (event) {
+		refreshValues('did-navigate-in-page');
 	});
 
 	webview.addEventListener('update-target-url', function (event) {
 		//show link of target bottom left
+	});
+
+	webview.addEventListener('new-window', function (event) {
+		event.preventDefault();
 	});
 }
 
@@ -103,25 +103,22 @@ function httpChecker(uri) {
 	return "http://" + uri;
 }
 
+function refreshValues(a) {
+	webview = document.querySelector('webview');
+	vueApp.canGoBack = webview.canGoBack();
+	vueApp.canGoForward = webview.canGoForward();
+	if (webview.isLoading()) {
+		vueApp.loading = true;
+	} else {
+		vueApp.loading = false;
+	}
+}
+
+function refreshUri(event, a) {
+	if (event.url && vueApp.currentLocation !== event.url) {
+		vueApp.currentLocation = event.url;
+	}
+}
 
 //ADD KEYBOARD EVENTS
-// <webview>.undo()
-// Executes editing command undo in page.
-
-// <webview>.redo()
-// Executes editing command redo in page.
-
-// <webview>.cut()
-// Executes editing command cut in page.
-
-// <webview>.copy()
-// Executes editing command copy in page.
-
-// <webview>.paste()
-// Executes editing command paste in page.
-
-// <webview>.delete()
-// Executes editing command delete in page.
-
-// <webview>.selectAll()
-// Executes editing command selectAll in page.
+//go back, find, etc

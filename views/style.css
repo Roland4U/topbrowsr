@@ -21,7 +21,6 @@ body:hover .fadeInDown {
 }
 
 .menuBar {
-    -webkit-app-region: drag;
     position: absolute;
     height: 50px;
     width: 100vw;
@@ -40,6 +39,12 @@ body:hover .fadeInDown {
     height: 20px;
     width: 100vw;
     border-bottom: 1px solid lightslategrey;
+}
+
+.draggable {
+    width: 100%;
+    height: 100%;
+    -webkit-app-region: drag;
 }
 
 .topButtons {
@@ -67,7 +72,7 @@ body:hover .fadeInDown {
     background: lightgreen;
 }
 
-.toolBar { 
+.toolBar {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -87,9 +92,18 @@ body:hover .fadeInDown {
     align-items: center;
     justify-content: center;
     margin: 0px 5px 0px 5px;
+    border: none;
+}
+
+.toolbarButtons:disabled {
+    color: lightgrey;
 }
 
 .toolbarButtons:hover {
+    background: darkgrey;
+}
+
+.toolbarButtons:active {
     background: grey;
 }
 
@@ -101,13 +115,17 @@ body:hover .fadeInDown {
 #searchBar {
     width: calc(100% - 30px);
     border: 1px solid #d1d1d1;
-    font: bold 12px Arial,Helvetica,Sans-serif;
+    font: bold 12px Arial, Helvetica, Sans-serif;
     color: #bebebe;
     padding: 6px 15px 6px 15px;
     border-radius: 20px;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
     transition: all 0.7s ease 0s;
+}
+
+#searchBar:focus {
+    color: grey;
 }
 
 #showBarButton {
