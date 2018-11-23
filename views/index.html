@@ -40,12 +40,12 @@
 				<div class="toolbarInput">
 					<input id="searchBar" type="url" v-model="currentLocation" placeholder="Type a URL" />
 				</div>
-				<div class="toolbarButtons bookmarksButton" v-on:click="showBookmarks">
+				<button class="toolbarButtons bookmarksButton" type="button" v-on:click="showBookmarks">
 					<i class="far fa-bookmark"></i>
-				</div>
-				<div class="toolbarButtons historyButton" v-on:click="showHistory">
+				</button>
+				<button class="toolbarButtons historyButton" type="button" v-on:click="showHistory">
 					<i class="fas fa-history"></i>
-				</div>
+				</button>
 			</div>
 		</div>
 		<div id="showBarButton" class="fadeInDown" v-on:click="showMenuBar=!showMenuBar">

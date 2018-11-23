@@ -36,9 +36,6 @@ var vueApp = new Vue({
 		},
 		back: function () {
 			webview.goBack();
-			bookmarks.saveBookmark("title",this.currentLocation, function(asd){
-				console.log("well?", asd);
-			});
 		},
 		forward: function () {
 			webview.goForward();
@@ -51,10 +48,10 @@ var vueApp = new Vue({
 			}
 		},
 		showBookmarks: function () {
-
+			
 		},
 		showHistory: function () {
-			
+
 		}
 	}
 });
