@@ -38,12 +38,20 @@
 					<i class="fas fa-times" v-if="loading"></i>
 				</div>
 				<div class="toolbarInput">
-					<input id="searchBar" type="url" v-model="currentLocation" placeholder="Type a URL" />
+					<input id="searchBar" type="url" v-model="currentLocation" @change="loadUri" placeholder="Type a URL" />
 				</div>
 				<button class="toolbarButtons bookmarksButton" type="button" v-on:click="showBookmarks">
 					<i class="far fa-bookmark"></i>
 				</button>
-				<button class="toolbarButtons historyButton" type="button" v-on:click="showHistory">
+				<div class="bookmarksDropdown" v-if="showingBookmarks" @blur="showingBookmarks=false">
+					<div class="bookmark" v-on:click="addBookmark">
+						+ Bookmark this page
+					</div>
+					<div class="bookmark" v-for="(bookmark, index) in bookmarks" v-on:click="goBookmark(index)">
+						{{bookmark.title}}
+					</div>
+				</div>
+				<button class="toolbarButtons historyButton" type="button" v-on:click="showingHistory=true">
 					<i class="fas fa-history"></i>
 				</button>
 			</div>

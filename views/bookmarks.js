@@ -7,6 +7,9 @@ const bookmarks = {
         return json.bookmarks;
     },
     saveBookmark: function (title, url, callback) {
+        if (alreadyAdded(url)) {
+            return;//show alert
+        }
         json.bookmarks.push({ title, url, id: uuidv4() });
         fs.writeFile('./views/bookmarks.json', JSON.stringify(json), 'utf8', callback);
     },
@@ -18,3 +21,12 @@ const bookmarks = {
 };
 
 module.exports = bookmarks;
+
+function alreadyAdded(url) {
+    json.bookmarks.forEach(bookmark => {
+        if (bookmark.url === url) {
+            return true;
+        }
+    });
+    return false;
+}

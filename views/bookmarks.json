@@ -1,3 +1,19 @@
 {
-    "bookmarks": []
+    "bookmarks": [
+        {
+            "title": "<webview> Tag | Electron",
+            "url": "https://electronjs.org/docs/api/webview-tag",
+            "id": "055e6c02-fb73-49c0-aebc-7eda767cbc90"
+        },
+        {
+            "title": "Google",
+            "url": "https://www.google.com/",
+            "id": "95651e70-b9f2-41ac-937c-bca002424ec5"
+        },
+        {
+            "title": "Google",
+            "url": "https://www.google.com/",
+            "id": "acac7638-3da7-441d-ab7b-f4b6afe5669b"
+        }
+    ]
 }

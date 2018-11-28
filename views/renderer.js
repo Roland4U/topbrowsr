@@ -7,14 +7,17 @@ const {
 	bookmarks = require("./bookmarks"),
 	history = require("./history");
 
-var vueApp = new Vue({
+const vueApp = new Vue({
 	el: '#vueApp',
 	data: {
 		currentLocation: config.homeUri,
 		showMenuBar: false,
 		loading: false,
 		canGoBack: false,
-		canGoForward: false
+		canGoForward: false,
+		showingBookmarks: false,
+		showingHistory: false,
+		bookmarks: []
 	},
 	methods: {
 		maximize: function () {
@@ -30,9 +33,8 @@ var vueApp = new Vue({
 		exit: function () {
 			remote.app.quit();
 		},
-		loadUri: function () {
-			this.currentLocation = httpChecker(this.currentLocation);
-			webview.loadURL(this.url);
+		loadUri: function (uri) {
+			this.currentLocation = httpChecker(uri ? uri : this.currentLocation);
 		},
 		back: function () {
 			webview.goBack();
@@ -48,10 +50,19 @@ var vueApp = new Vue({
 			}
 		},
 		showBookmarks: function () {
-			
+			this.bookmarks = bookmarks.showBookmarks();
+			this.showingBookmarks = true;
 		},
-		showHistory: function () {
-
+		addBookmark: function () {
+			const self = this;
+			bookmarks.saveBookmark(webview.getTitle(), webview.getURL(), () => {
+				self.bookmarks = bookmarks.showBookmarks();
+				self.showingBookmarks = false;
+			});
+		},
+		goBookmark: function (index) {
+			this.loadUri(this.bookmarks[index].url);
+			this.showingBookmarks = false;
 		}
 	}
 });
@@ -119,3 +130,16 @@ function refreshUri(event, a) {
 
 //ADD KEYBOARD EVENTS
 //go back, find, etc
+
+document.querySelector("#vueApp").addEventListener("mousedown", function (e) {
+	let bookmarkClick = false;
+	for (let i = 0; i < e.path.length; i++) {
+		if (e.path[i].className === "bookmarksDropdown") {
+			bookmarkClick = true;
+			break;
+		}
+	}
+	if (!bookmarkClick) {
+		vueApp.showingBookmarks = false;
+	}
+});
