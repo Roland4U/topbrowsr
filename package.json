@@ -24,6 +24,7 @@
     "dependencies": {
         "jquery": "^3.3.1",
         "popper.js": "^1.14.3",
+        "toastr": "^2.1.4",
         "uuid": "^3.3.2",
         "vue-progressbar": "^0.7.5"
     }

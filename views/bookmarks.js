@@ -1,6 +1,7 @@
 const json = require("./bookmarks.json");
 const fs = require("fs");
 const uuidv4 = require('uuid/v4');
+const toastr = require("toastr");
 
 const bookmarks = {
     showBookmarks: function () {
@@ -8,7 +9,8 @@ const bookmarks = {
     },
     saveBookmark: function (title, url, callback) {
         if (alreadyAdded(url)) {
-            return;//show alert
+            toastr.info("You have already added this bookmark!");
+            return;
         }
         json.bookmarks.push({ title, url, id: uuidv4() });
         fs.writeFile('./views/bookmarks.json', JSON.stringify(json), 'utf8', callback);
@@ -23,10 +25,11 @@ const bookmarks = {
 module.exports = bookmarks;
 
 function alreadyAdded(url) {
+    let added = false;
     json.bookmarks.forEach(bookmark => {
         if (bookmark.url === url) {
-            return true;
+            added = true;
         }
     });
-    return false;
+    return added;
 }
