@@ -1,1 +1,3 @@
 node_modules
+./views/bookmarks.json
+./views/history.json
