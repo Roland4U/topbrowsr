@@ -82,6 +82,13 @@ const vueApp = new Vue({
 		goBookmark: function (index) {
 			this.loadUri(this.bookmarks[index].url);
 			this.showingBookmarks = false;
+		},
+		deleteBookmark: function (index) {
+			const self = this;
+			bookmarks.deleteBookmarks(this.bookmarks[index].id, () => {
+				self.bookmarks = bookmarks.showBookmarks();
+				self.showingBookmarks = false;
+			});
 		}
 	}
 });

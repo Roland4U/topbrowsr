@@ -16,7 +16,7 @@ const bookmarks = {
         fs.writeFile('./views/bookmarks.json', JSON.stringify(json), 'utf8', callback);
     },
     deleteBookmarks: function (id, callback) {
-        const index = json.bookmarks.find((bookmark) => bookmark.id === id);
+        const index = json.bookmarks.findIndex((bookmark) => bookmark.id === id);
         json.bookmarks.splice(index, 1);
         fs.writeFile('./views/bookmarks.json', JSON.stringify(json), 'utf8', callback);
     }

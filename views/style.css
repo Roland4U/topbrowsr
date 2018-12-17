@@ -53,6 +53,7 @@ body:hover .fadeInDown {
     border-radius: 50%;
     height: 15px;
     width: 15px;
+    min-width: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,11 +167,33 @@ body:hover .fadeInDown {
 
 .bookmark {
     padding: 3px 15px 3px 15px;
+    cursor: pointer;
 }
 
 .bookmark:hover {
-    cursor: pointer;
     background-color: #d4d4d4;;
+}
+
+.bottomLine {
+    border-bottom: 1px solid rgba(119, 136, 153, 0.192);
+}
+
+.bookmarkRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.bookmarkTitle {
+    width: 100%;
+}
+
+.deleteBookmark {
+    color: #bebebe;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #webview {

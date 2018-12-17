@@ -2,6 +2,10 @@ const {
 	app,
 	BrowserWindow
 } = require('electron');
+const path = require("path");
+
+app.commandLine.appendSwitch('widevine-cdm-path', path.join(__dirname, 'lib/widewine-cdm/1.4.8.903/widevinecdmadapter.plugin'));
+app.commandLine.appendSwitch('widevine-cdm-version', '1.4.8.903');
 
 let mainWindow;
 

@@ -45,11 +45,12 @@
 					<i class="far fa-bookmark"></i>
 				</button>
 				<div class="bookmarksDropdown" v-if="showingBookmarks" @blur="showingBookmarks=false">
-					<div class="bookmark" v-on:click="addBookmark">
+					<div class="bookmark bottomLine" v-on:click="addBookmark">
 						+ Bookmark this page
 					</div>
-					<div class="bookmark" v-for="(bookmark, index) in bookmarks" v-on:click="goBookmark(index)">
-						{{bookmark.title}}
+					<div class="bookmark bookmarkRow" v-for="(bookmark, index) in bookmarks">
+						<span class="bookmarkTitle" v-on:click="goBookmark(index)">{{bookmark.title}}</span>
+						<div class="deleteBookmark" v-on:click="deleteBookmark(index)"><i class="fas fa-minus"></i></div>
 					</div>
 				</div>
 				<button class="toolbarButtons historyButton" type="button" v-on:click="showingHistory=true">
