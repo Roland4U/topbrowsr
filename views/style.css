@@ -143,7 +143,9 @@ body:hover .fadeInDown {
     z-index: 10;
 }
 
-.historyButton {}
+.historyButton {
+    background-color: #bebebe;
+}
 
 .bookmarksButton {
     background-color: #bebebe;
@@ -186,6 +188,7 @@ body:hover .fadeInDown {
 
 .bookmarkTitle {
     width: 100%;
+    margin-right: 10px;
 }
 
 .deleteBookmark {

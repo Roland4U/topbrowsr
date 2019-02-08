@@ -36,7 +36,8 @@ const vueApp = new Vue({
 		canGoForward: false,
 		showingBookmarks: false,
 		showingHistory: false,
-		bookmarks: []
+		bookmarks: [],
+		history: []
 	},
 	methods: {
 		maximize: function () {
@@ -68,6 +69,9 @@ const vueApp = new Vue({
 				webview.reload();
 			}
 		},
+		goHome: function () {
+			this.currentLocation = config.homeUri;
+		},
 		showBookmarks: function () {
 			this.bookmarks = bookmarks.showBookmarks();
 			this.showingBookmarks = true;
@@ -89,6 +93,22 @@ const vueApp = new Vue({
 				self.bookmarks = bookmarks.showBookmarks();
 				self.showingBookmarks = false;
 			});
+		},
+		showHistory: function () {
+			this.history = history.showHistory();
+			this.showingHistory = true;
+		},
+		addHistory: function () {
+
+		},
+		goHistory: function (index) {
+
+		},
+		clearHistory: function (index) {
+
+		},
+		deleteHistory: function (index) {
+
 		}
 	}
 });
@@ -102,10 +122,20 @@ onload = () => {
 
 	webview.addEventListener('did-finish-load', function (event) {
 		refreshValues('did-finish-load');
+		refreshUri(event, 'did-get-redirect-request');
+	});
+
+	webview.addEventListener('did-start-loading', function (event) {
+		refreshValues('did-start-loading');
 	});
 
 	webview.addEventListener('did-stop-loading', function (event) {
 		refreshValues('did-stop-loading');
+	});
+
+	webview.addEventListener('did-get-redirect-request', function (event) {
+		refreshValues('did-get-redirect-request');
+		refreshUri(event, 'did-get-redirect-request');
 	});
 
 	webview.addEventListener('will-navigate', function (event) {

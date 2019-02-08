@@ -6,7 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Top Browser</title>
 	<link rel="stylesheet" href="./style.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+	 crossorigin="anonymous">
 	<link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css" />
 	<script src="../node_modules/toastr/build/toastr.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -15,6 +16,7 @@
 <body>
 	<div id="vueApp">
 		<div class="menuBar" v-if="showMenuBar">
+			<!-- Top bar with window functions -->
 			<div class="topBar">
 				<div class="topButtons closeButton" v-on:click="exit">
 					<i class="fas fa-times"></i>
@@ -27,6 +29,7 @@
 				</div>
 				<div class="draggable"></div>
 			</div>
+			<!-- Toolbar with browser functions -->
 			<div class="toolBar">
 				<button class="toolbarButtons backButton" type="button" v-on:click="back" :disabled="!canGoBack">
 					<i class="fas fa-chevron-left"></i>
@@ -38,9 +41,14 @@
 					<i class="fas fa-redo" v-if="!loading"></i>
 					<i class="fas fa-times" v-if="loading"></i>
 				</div>
+				<div class="toolbarButtons homeButton" v-on:click="goHome">
+					<i class="fas fa-home"></i>
+				</div>
 				<div class="toolbarInput">
 					<input id="searchBar" type="url" v-model="currentLocation" @change="loadUri" placeholder="Type a URL" />
+					<!-- This searchbar is shit TODO improvement -->
 				</div>
+				<!-- Bookmarks button and dropdown -->
 				<button class="toolbarButtons bookmarksButton" type="button" v-on:click="showBookmarks">
 					<i class="far fa-bookmark"></i>
 				</button>
@@ -53,16 +61,28 @@
 						<div class="deleteBookmark" v-on:click="deleteBookmark(index)"><i class="fas fa-minus"></i></div>
 					</div>
 				</div>
+				<!-- History button and dropdown -->
 				<button class="toolbarButtons historyButton" type="button" v-on:click="showingHistory=true">
 					<i class="fas fa-history"></i>
 				</button>
+				<div class="historyDropdown" v-if="showingHistory" @blur="showingHistory=false">
+					<div class="history bottomLine" v-on:click="clearHistory">
+						- Clear History
+					</div>
+					<div class="history historyRow" v-for="(log, index) in history">
+						<span class="historyTitle" v-on:click="goHistory(index)">{{log.title}}</span>
+						<div class="deleteHistory" v-on:click="deleteHistory(index)"><i class="fas fa-minus"></i></div>
+					</div>
+				</div>
 			</div>
 		</div>
+		<!-- The button to minimize Nav bar and Toolbar -->
 		<div id="showBarButton" class="fadeInDown" v-on:click="showMenuBar=!showMenuBar">
 			<i class="fas fa-angle-down" v-if="!showMenuBar"></i>
 			<i class="fas fa-angle-up" v-if="showMenuBar"></i>
 			<!-- add message to know what it is-->
 		</div>
+		<!-- The main webview -->
 		<webview id="webview" :src="currentLocation" allowpopups webpreferences="nativeWindowOpen=true" plugins></webview>
 	</div>
 	<script>
