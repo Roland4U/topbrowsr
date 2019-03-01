@@ -26,6 +26,8 @@ toastr.options = {
 	"hideMethod": "fadeOut"
 }
 
+Vue.use(Vuetify)
+
 const vueApp = new Vue({
 	el: '#vueApp',
 	data: {
@@ -36,8 +38,10 @@ const vueApp = new Vue({
 		canGoForward: false,
 		showingBookmarks: false,
 		showingHistory: false,
+		showingMenu: false,
 		bookmarks: [],
-		history: []
+		history: [],
+		windowOpacity: 1
 	},
 	methods: {
 		maximize: function () {
@@ -95,20 +99,29 @@ const vueApp = new Vue({
 			});
 		},
 		showHistory: function () {
-			this.history = history.showHistory();
+			this.history = history.showRecentHistory(config.historyLimit);
 			this.showingHistory = true;
 		},
 		addHistory: function () {
-
+			const self = this;
+			history.saveHistory(webview.getTitle(), webview.getURL(), () => {
+				self.history = history.showRecentHistory(config.historyLimit);
+			});
 		},
 		goHistory: function (index) {
-
+			this.loadUri(this.history[index].url);
+			this.showingHistory = false;
 		},
-		clearHistory: function (index) {
-
+		clearHistory: function () {
+			const self = this;
+			history.deleteAllHistory(function () {
+				self.showingHistory = false;
+			});
 		},
 		deleteHistory: function (index) {
-
+			history.deleteHistory(this.history[index].id, function(){
+				this.history = history.showRecentHistory(config.historyLimit);
+			});
 		}
 	}
 });
@@ -158,6 +171,37 @@ onload = () => {
 	webview.addEventListener('new-window', function (event) {
 		event.preventDefault();
 	});
+
+	document.querySelector("#vueApp").addEventListener("mousedown", function (e) {
+		let bookmarkClick = false;
+		let historyClick = false;
+		let menuClick = false;
+
+		for (let i = 0; i < e.path.length; i++) {
+			if (e.path[i].className === "bookmarksDropdown") {
+				bookmarkClick = true;
+				break;
+			}
+			if (e.path[i].className === "historyDropdown") {
+				historyClick = true;
+				break;
+			}
+			if (e.path[i].className === "menuDropdown") {
+				menuClick = true;
+				break;
+			}
+		}
+		if (!bookmarkClick) {
+			vueApp.showingBookmarks = false;
+		}
+		if (!historyClick) {
+			vueApp.showingHistory = false;
+		}
+		if (!menuClick) {
+			vueApp.showingMenu = false;
+		}
+	});
+
 }
 
 function httpChecker(uri) {
@@ -182,20 +226,5 @@ function refreshUri(event, a) {
 	if (event.url && vueApp.currentLocation !== event.url) {
 		vueApp.currentLocation = event.url;
 	}
+	vueApp.addHistory();
 }
-
-//ADD KEYBOARD EVENTS
-//go back, find, etc
-
-document.querySelector("#vueApp").addEventListener("mousedown", function (e) {
-	let bookmarkClick = false;
-	for (let i = 0; i < e.path.length; i++) {
-		if (e.path[i].className === "bookmarksDropdown") {
-			bookmarkClick = true;
-			break;
-		}
-	}
-	if (!bookmarkClick) {
-		vueApp.showingBookmarks = false;
-	}
-});

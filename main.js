@@ -15,6 +15,7 @@ function createWindow() {
 		height: 600,
 		show: false,
 		frame: false,
+		transparent: true,
 		alwaysOnTop: true,
 		minWidth: 300,
 		minHeight: 150,
