@@ -1,11 +1,19 @@
 const {
 	app,
-	BrowserWindow
-} = require('electron');
-const path = require("path");
+	BrowserWindow,
+	session,
+	Menu,
+	ipcMain
+} = require('electron'),
+	path = require("path"),
+	{
+		ElectronBlocker,
+		fullLists,
+		Request
+	} = require('@cliqz/adblocker-electron'),
+	fetch = require('node-fetch');
 
-app.commandLine.appendSwitch('widevine-cdm-path', path.join(__dirname, 'lib/widewine-cdm/1.4.8.903/widevinecdmadapter.plugin'));
-app.commandLine.appendSwitch('widevine-cdm-version', '1.4.8.903');
+require('electron-widevinecdm').load(app);
 
 let mainWindow;
 
@@ -14,31 +22,38 @@ function createWindow() {
 		width: 800,
 		height: 600,
 		show: false,
-		frame: false,
 		transparent: true,
 		alwaysOnTop: true,
 		minWidth: 300,
 		minHeight: 150,
-		title: "TopBrowser"
+		title: "TopBrowser",
+		webPreferences: {
+			nodeIntegration: true,
+			webviewTag: true
+		}
 	});
 	mainWindow.loadFile('./views/index.html');
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show();
 	});
-	mainWindow.on('closed', function() {
+	mainWindow.on('closed', function () {
 		mainWindow = null;
 	});
+	mainWindow.on('minimize',function(event){
+        console.log("Clickthrough disabled");
+        mainWindow.setIgnoreMouseEvents(false);
+    });
 }
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
 });
 
-app.on('activate', function() {
+app.on('activate', function () {
 	if (mainWindow === null) {
 		createWindow();
 	}

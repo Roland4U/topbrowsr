@@ -1,230 +1,93 @@
-window.$ = window.jQuery = require('jquery');
+const { remote } = require('electron');
+const { Menu, BrowserWindow, MenuItem, shell } = remote;
+const fs = require("fs");
+
 var webview;
-const {
-	remote
-} = require('electron'),
-	config = require("./config"),
-	bookmarks = require("./bookmarks"),
-	history = require("./history");
-const toastr = require("toastr");
-
-toastr.options = {
-	"closeButton": false,
-	"debug": false,
-	"newestOnTop": false,
-	"progressBar": true,
-	"positionClass": "toast-top-right",
-	"preventDuplicates": true,
-	"onclick": null,
-	"showDuration": "300",
-	"hideDuration": "1000",
-	"timeOut": "5000",
-	"extendedTimeOut": "1000",
-	"showEasing": "swing",
-	"hideEasing": "linear",
-	"showMethod": "fadeIn",
-	"hideMethod": "fadeOut"
-}
-
-Vue.use(Vuetify)
-
-const vueApp = new Vue({
-	el: '#vueApp',
-	data: {
-		currentLocation: config.homeUri,
-		showMenuBar: false,
-		loading: false,
-		canGoBack: false,
-		canGoForward: false,
-		showingBookmarks: false,
-		showingHistory: false,
-		showingMenu: false,
-		bookmarks: [],
-		history: [],
-		windowOpacity: 1
-	},
-	methods: {
-		maximize: function () {
-			if (remote.BrowserWindow.getFocusedWindow().isMaximized()) {
-				remote.BrowserWindow.getFocusedWindow().unmaximize();
-			} else {
-				remote.BrowserWindow.getFocusedWindow().maximize();
-			}
-		},
-		minimize: function () {
-			remote.BrowserWindow.getFocusedWindow().minimize();
-		},
-		exit: function () {
-			remote.app.quit();
-		},
-		loadUri: function (uri) {
-			this.currentLocation = httpChecker(uri ? uri : this.currentLocation);
-		},
-		back: function () {
-			webview.goBack();
-		},
-		forward: function () {
-			webview.goForward();
-		},
-		reloadStop: function () {
-			if (webview.isLoading()) {
-				webview.stop();
-			} else {
-				webview.reload();
-			}
-		},
-		goHome: function () {
-			this.currentLocation = config.homeUri;
-		},
-		showBookmarks: function () {
-			this.bookmarks = bookmarks.showBookmarks();
-			this.showingBookmarks = true;
-		},
-		addBookmark: function () {
-			const self = this;
-			bookmarks.saveBookmark(webview.getTitle(), webview.getURL(), () => {
-				self.bookmarks = bookmarks.showBookmarks();
-				self.showingBookmarks = false;
-			});
-		},
-		goBookmark: function (index) {
-			this.loadUri(this.bookmarks[index].url);
-			this.showingBookmarks = false;
-		},
-		deleteBookmark: function (index) {
-			const self = this;
-			bookmarks.deleteBookmarks(this.bookmarks[index].id, () => {
-				self.bookmarks = bookmarks.showBookmarks();
-				self.showingBookmarks = false;
-			});
-		},
-		showHistory: function () {
-			this.history = history.showRecentHistory(config.historyLimit);
-			this.showingHistory = true;
-		},
-		addHistory: function () {
-			const self = this;
-			history.saveHistory(webview.getTitle(), webview.getURL(), () => {
-				self.history = history.showRecentHistory(config.historyLimit);
-			});
-		},
-		goHistory: function (index) {
-			this.loadUri(this.history[index].url);
-			this.showingHistory = false;
-		},
-		clearHistory: function () {
-			const self = this;
-			history.deleteAllHistory(function () {
-				self.showingHistory = false;
-			});
-		},
-		deleteHistory: function (index) {
-			history.deleteHistory(this.history[index].id, function(){
-				this.history = history.showRecentHistory(config.historyLimit);
-			});
-		}
-	}
-});
 
 onload = () => {
-	webview = document.querySelector('webview');
+    webview = document.querySelector('webview');
 
-	webview.addEventListener('load-commit', function (event, asd) {
-		refreshValues('load-commit');
-	});
+    $("#url").keyup(function (e) {
+        if (e.keyCode == 13) {
+            let url = $("#url").val();
+            loadURL(url);
+        }
+    });
 
-	webview.addEventListener('did-finish-load', function (event) {
-		refreshValues('did-finish-load');
-		refreshUri(event, 'did-get-redirect-request');
-	});
+    $("#back").click(function () {
+        if (webview.canGoBack())
+            webview.goBack();
+    });
 
-	webview.addEventListener('did-start-loading', function (event) {
-		refreshValues('did-start-loading');
-	});
+    $("#forward").click(function () {
+        if (webview.canGoForward())
+            webview.goForward();
+    });
 
-	webview.addEventListener('did-stop-loading', function (event) {
-		refreshValues('did-stop-loading');
-	});
+    $("#home").click(function () {
+        loadURL("https://www.google.com/");
+    });
 
-	webview.addEventListener('did-get-redirect-request', function (event) {
-		refreshValues('did-get-redirect-request');
-		refreshUri(event, 'did-get-redirect-request');
-	});
+    $("#reload").click(function () {
+        webview.reload();
+    });
 
-	webview.addEventListener('will-navigate', function (event) {
-		refreshValues('will-navigate');
-		refreshUri(event, 'will-navigate');
-	});
+    $("#stop").click(function () {
+        webview.stop();
+    });
 
-	webview.addEventListener('did-navigate', function (event) {
-		refreshValues('did-navigate');
-	});
+    $("#opacity").change(function () {
+        let opacityValue = $(this).val() / 100;
+        changeOpacity(opacityValue);
+    });
 
-	webview.addEventListener('did-navigate-in-page', function (event) {
-		refreshValues('did-navigate-in-page');
-	});
+    $("#ignoreMouse").change(function () {
+        enableClickThrough();
+    });
 
-	webview.addEventListener('update-target-url', function (event) {
-		//show link of target bottom left
-	});
+    webview.addEventListener('did-start-loading', (e) => {
+        showStop();
+    });
 
-	webview.addEventListener('new-window', function (event) {
-		event.preventDefault();
-	});
+    webview.addEventListener('did-stop-loading', (e) => {
+        showRefresh();
+    });
 
-	document.querySelector("#vueApp").addEventListener("mousedown", function (e) {
-		let bookmarkClick = false;
-		let historyClick = false;
-		let menuClick = false;
 
-		for (let i = 0; i < e.path.length; i++) {
-			if (e.path[i].className === "bookmarksDropdown") {
-				bookmarkClick = true;
-				break;
-			}
-			if (e.path[i].className === "historyDropdown") {
-				historyClick = true;
-				break;
-			}
-			if (e.path[i].className === "menuDropdown") {
-				menuClick = true;
-				break;
-			}
-		}
-		if (!bookmarkClick) {
-			vueApp.showingBookmarks = false;
-		}
-		if (!historyClick) {
-			vueApp.showingHistory = false;
-		}
-		if (!menuClick) {
-			vueApp.showingMenu = false;
-		}
-	});
+    webview.addEventListener('did-navigate', (e) => {
+        $("#url").val(e.url);
+    });
+
+    webview.addEventListener('did-navigate-in-page', (e) => {
+        $("#url").val(e.url);
+    });
 
 }
 
-function httpChecker(uri) {
-	if (uri.search(/http?:\/\//) === 0 || uri.search(/https?:\/\//) === 0) {
-		return uri;
-	}
-	return "http://" + uri;
+function showRefresh() {
+    $("#reload").show();
+    $("#stop").hide();
 }
 
-function refreshValues(a) {
-	webview = document.querySelector('webview');
-	vueApp.canGoBack = webview.canGoBack();
-	vueApp.canGoForward = webview.canGoForward();
-	if (webview.isLoading()) {
-		vueApp.loading = true;
-	} else {
-		vueApp.loading = false;
-	}
+function showStop() {
+    $("#reload").hide();
+    $("#stop").show();
 }
 
-function refreshUri(event, a) {
-	if (event.url && vueApp.currentLocation !== event.url) {
-		vueApp.currentLocation = event.url;
-	}
-	vueApp.addHistory();
+function loadURL(url) {
+    if (url.indexOf("http") != 0) {
+        url = "http://" + url;
+    }
+    console.log("Loading " + url);
+    webview.loadURL(url);
+}
+
+function enableClickThrough() {
+    console.log("Clickthrough enabled.")
+    var window = remote.getCurrentWindow();
+    window.setIgnoreMouseEvents(true);
+}
+
+function changeOpacity(opacity) {
+    $("body").css('opacity', opacity);
 }

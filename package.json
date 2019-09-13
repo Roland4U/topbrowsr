@@ -18,16 +18,13 @@
     "license": "MIT",
     "devDependencies": {
         "asar": "^0.14.3",
-        "electron": "^2.0.17",
+        "electron": "^5.0.1",
         "electron-nightly": "^6.0.0-nightly.20190213",
         "electron-packager": "^12.1.0"
     },
     "dependencies": {
-        "jquery": "^3.3.1",
-        "popper.js": "^1.14.3",
-        "toastr": "^2.1.4",
-        "uuid": "^3.3.2",
-        "vue-progressbar": "^0.7.5",
-        "vuetify": "^1.5.1"
+        "@cliqz/adblocker-electron": "^1.0.2",
+        "cross-fetch": "^3.0.4",
+        "electron-widevinecdm": "./electron-widevinecdm"
     }
 }
