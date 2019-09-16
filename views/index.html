@@ -31,6 +31,14 @@
 			<input id="url" type="url" class="url" autofocus value="https://www.google.com/" />
 		</div>
 		<div class="control">
+			<div id="bookmark" class="controlItem dropdown">
+				<i class="fas fa-bookmark"></i>
+				<ul id="bookmarkList" class="dropdown-content">
+					<li class="addBookmark">
+						<i class="far fa-bookmark" style="margin-right: 5px;"></i>Add Bookmark
+					</li>
+				</ul>
+			</div>
 			<div id="sliders" class="controlItem dropdown">
 				<i class="fas fa-sliders-h"></i>
 				<div class="dropdown-content">
@@ -54,8 +62,8 @@
 
 
 	<script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script src="https://kit.fontawesome.com/de0d612571.js"></script>
+	<script type="text/javascript" src="./fontawesome.js"></script>
+	<script type="text/javascript" src="./jquery.js"></script>
 	<script>
 		if (window.module) module = window.module;
 		require('./renderer.js');

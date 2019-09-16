@@ -74,19 +74,20 @@ webview {
 .dropdown-content {
     display: none;
     position: absolute;
+    top: 25px;
     right: 0px;
-    background-color: rgb(245, 248, 253);
     min-width: 100px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 15px;
     padding-top: 15px;
     padding-bottom: 15px;
+    background: rgb(39, 44, 47);
+    color: white;
 }
 
 .dropdown-content div {
     float: none;
-    color: black;
     padding: 5px 15px 5px 15px;
     text-decoration: none;
     display: flex;
@@ -97,4 +98,33 @@ webview {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+#bookmarkList {
+    list-style-type: none;
+    top: 10px;
+    padding: 15px;
+}
+
+.addBookmark {
+    cursor: pointer;
+    border-bottom: 1px grey solid;
+    padding-bottom: 10px !important;
+    margin-bottom: 5px;
+}
+
+#bookmarkList li {
+    padding: 5px 0 5px 0;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#bookmarkList li span {
+    width: 100%;
+}
+
+.bookmark {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
 }
