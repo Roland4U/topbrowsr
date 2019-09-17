@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "build": "rm -rf Top-Browser-darwin-x64 && electron-packager . Top-Browser && cp browser.icns Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/electron.icns && asar pack Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app.asar && rm -rf Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app"
+        "build": "electron-builder -c ./build/electron-builder.yml -p never"
     },
     "repository": "https://bitbucket.org/speedydemon/electron_top_browser/",
     "keywords": [
@@ -18,16 +18,15 @@
     "license": "MIT",
     "devDependencies": {
         "asar": "^0.14.3",
-        "electron": "^2.0.17",
+        "electron": "^5.0.1",
+        "electron-builder": "^21.2.0",
         "electron-nightly": "^6.0.0-nightly.20190213",
         "electron-packager": "^12.1.0"
     },
     "dependencies": {
-        "jquery": "^3.3.1",
-        "popper.js": "^1.14.3",
-        "toastr": "^2.1.4",
-        "uuid": "^3.3.2",
-        "vue-progressbar": "^0.7.5",
-        "vuetify": "^1.5.1"
+        "@cliqz/adblocker-electron": "^1.0.2",
+        "cross-fetch": "^3.0.4",
+        "electron-store": "https://github.com/oscartbeaumont-ext/electron-store.git",
+        "electron-widevinecdm": "./electron-widevinecdm"
     }
 }

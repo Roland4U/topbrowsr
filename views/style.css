@@ -1,5 +1,6 @@
 html {
-    overflow: auto !important;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -8,282 +9,122 @@ body {
     margin: 0;
 }
 
-body:hover .fadeInDown {
-    animation: fadeIn 0.5s linear 0s 1;
+.toolbar {
+    height: 28px;
+    width: -webkit-fill-available;
+    padding: 3px;
+    background-color: rgb(245, 248, 253);
     display: flex;
+    flex-flow: row nowrap;
 }
 
-.fadeInDown {
-    display: none;
-}
-
-#vueApp {
-    display: flex;
-    flex-flow: column nowrap;
-    height: 100vh;
-    width: 100vw;
-}
-
-.menuBar {
-    position: absolute;
-    height: 50px;
-    width: 100vw;
-    flex-flow: column nowrap;
-    opacity: 0.9;
-    background: gainsboro;
-    display: flex;
-    box-shadow: inset 0px 0px 30px lightslategrey;
-    z-index: 5;
-}
-
-.topBar {
+.control {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    height: 20px;
-    width: 100vw;
-    border-bottom: 1px solid lightslategrey;
 }
 
-.draggable {
-    width: 100%;
+.controlItem {
+    padding: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.controlItem:active {
+    background-color: rgb(204, 207, 212);
+}
+
+.searchbar {
+    flex: 1 0 0;
     height: 100%;
-    -webkit-app-region: drag;
-}
-
-.topButtons {
-    margin-left: 5px;
-    cursor: pointer;
-    border-radius: 50%;
-    height: 15px;
-    width: 15px;
-    min-width: 15px;
+    border-radius: 28px;
+    background-color: rgb(39, 44, 47);
     display: flex;
-    align-items: center;
+    flex-flow: column nowrap;
     justify-content: center;
-    background: darkgrey;
-    font-size: 10px;
 }
 
-.closeButton:hover {
-    background: orangered;
-}
-
-.minimizeButton:hover {
-    background: yellow;
-}
-
-.maximizeButton:hover {
-    background: lightgreen;
-}
-
-.toolBar {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    height: 30px;
-    width: 100vw;
-    border-bottom: 1px solid lightslategrey;
-}
-
-.toolbarButtons {
+.url {
+    background-color: transparent;
+    border-color: transparent;
+    outline: none;
+    color: white;
     font-size: 14px;
-    cursor: pointer;
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
-    min-width: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0px 5px 0px 5px;
-    border: none;
+    margin-left: 15px;
+    margin-right: 15px;
+    flex: 1 0 0;
 }
 
-.toolbarButtons:disabled {
-    color: lightgrey;
-}
-
-.toolbarButtons:hover {
-    background: darkgrey;
-}
-
-.toolbarButtons:active {
-    background: grey;
-}
-
-.toolbarInput {
-    width: 100%;
-    margin: 0px 5px 0px 5px;
-}
-
-#searchBar {
-    width: calc(100% - 30px);
-    border: 1px solid #d1d1d1;
-    font: bold 12px Arial, Helvetica, Sans-serif;
-    color: #bebebe;
-    padding: 6px 15px 6px 15px;
-    border-radius: 20px;
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
-    transition: all 0.7s ease 0s;
-}
-
-#searchBar:focus {
-    color: grey;
-}
-
-#showBarButton {
-    position: absolute;
-    top: 0px;
-    right: 20px;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: lightgray;
-    height: 20px;
-    width: 20px;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
-
-.bookmarksButton {
-    background-color: #bebebe;
-}
-
-.bookmarksDropdown {
-    position: absolute;
-    right: 55px;
-    top: 45px;
-    background-color: #f1f1f1;
-    max-height: calc(100vh - 70px);
-    min-height: 0px;
-    max-width: calc(100vw - 35px);
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    padding: 10px 0px 10px 0px;
-    border-radius: 5px;
-    display: grid;
-    overflow-y: auto;
-}
-
-.bookmark {
-    padding: 3px 15px 3px 15px;
-    cursor: pointer;
-}
-
-.bookmark:hover {
-    background-color: #d4d4d4;
-}
-
-.bottomLine {
-    border-bottom: 1px solid rgba(119, 136, 153, 0.192);
-}
-
-.bookmarkRow {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-}
-
-.bookmarkTitle {
-    width: 100%;
-    margin-right: 10px;
-}
-
-.deleteBookmark {
-    color: #bebebe;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.historyButton {
-    background-color: #bebebe;
-}
-
-.history {
-    padding: 3px 15px 3px 15px;
-    cursor: pointer;
-}
-
-.history:hover {
-    background-color: #d4d4d4;
-}
-
-.historyDropdown {
-    position: absolute;
-    right: 30px;
-    top: 45px;
-    background-color: #f1f1f1;
-    max-height: calc(100vh - 70px);
-    min-height: 0px;
-    max-width: calc(100vw - 35px);
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    padding: 10px 0px 10px 0px;
-    border-radius: 5px;
-    display: grid;
-    overflow-y: auto;
-}
-
-.historyRow {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-}
-
-.historyTitle {
-    width: 100%;
-    margin-right: 10px;
-}
-
-.deleteHistory {
-    color: #bebebe;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.menuButton {
-    background-color: #bebebe;
-}
-
-.menuDropdown {
-    position: absolute;
-    right: 5px;
-    top: 45px;
-    background-color: #f1f1f1;
-    max-height: calc(100vh - 70px);
-    min-height: 0px;
-    max-width: calc(100vw - 35px);
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    padding: 10px 0px 10px 0px;
-    border-radius: 5px;
-    display: grid;
-    overflow-y: auto;
-}
-
-.menuRow {
-    padding: 3px 15px 3px 15px;
-}
-
-#webview {
+webview {
     height: 100vh;
     width: 100vw;
     z-index: 0;
 }
 
-@keyframes fadeIn {
-    0% {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0px);
-        opacity: 0.7;
-    }
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 25px;
+    right: 0px;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background: rgb(39, 44, 47);
+    color: white;
+}
+
+.dropdown-content div {
+    float: none;
+    padding: 5px 15px 5px 15px;
+    text-decoration: none;
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: center;
+    text-align: left;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#bookmarkList {
+    list-style-type: none;
+    top: 10px;
+    padding: 15px;
+}
+
+.addBookmark {
+    cursor: pointer;
+    border-bottom: 1px grey solid;
+    padding-bottom: 10px !important;
+    margin-bottom: 5px;
+}
+
+#bookmarkList li {
+    padding: 5px 0 5px 0;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#bookmarkList li span {
+    width: 100%;
+}
+
+.bookmark {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
 }
