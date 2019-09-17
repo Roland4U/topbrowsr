@@ -64,6 +64,14 @@ onload = () => {
         enableClickThrough();
     });
 
+    $("#ytbToolbar").change(function (e) {
+        if ($(this).prop("checked")) {
+            webview.insertCSS('#masthead-container.ytd-app{ display: none;}')
+        } else {
+            webview.insertCSS('#masthead-container.ytd-app{ display: block;}')
+        }
+    });
+
     // ********************************* WEBVIEW EVENTS *********************************
 
     webview.addEventListener('did-start-loading', (e) => {
