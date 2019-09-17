@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "build": "rm -rf Top-Browser-darwin-x64 && electron-packager . Top-Browser && cp browser.icns Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/electron.icns && asar pack Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app.asar && rm -rf Top-Browser-darwin-x64/Top-Browser.app/Contents/Resources/app"
+        "build": "electron-builder -c ./build/electron-builder.yml -p never"
     },
     "repository": "https://bitbucket.org/speedydemon/electron_top_browser/",
     "keywords": [
@@ -19,12 +19,14 @@
     "devDependencies": {
         "asar": "^0.14.3",
         "electron": "^5.0.1",
+        "electron-builder": "^21.2.0",
         "electron-nightly": "^6.0.0-nightly.20190213",
         "electron-packager": "^12.1.0"
     },
     "dependencies": {
         "@cliqz/adblocker-electron": "^1.0.2",
         "cross-fetch": "^3.0.4",
+        "electron-store": "https://github.com/oscartbeaumont-ext/electron-store.git",
         "electron-widevinecdm": "./electron-widevinecdm"
     }
 }

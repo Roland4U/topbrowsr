@@ -5,6 +5,7 @@ const {
 	Menu,
 	ipcMain
 } = require('electron'),
+	Store = require('electron-store'),
 	path = require("path"),
 	{
 		ElectronBlocker,
@@ -16,8 +17,9 @@ const {
 require('electron-widevinecdm').load(app);
 
 let mainWindow;
+const store = new Store();
 
-function createWindow() {
+async function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -29,9 +31,35 @@ function createWindow() {
 		title: "TopBrowser",
 		webPreferences: {
 			nodeIntegration: true,
+			plugins: true,
 			webviewTag: true
-		}
+		},
+		backgroundColor: '#00000000'
 	});
+
+	if (store.get('options.adblock')) {
+		let engineCachePath = path.join(
+			app.getPath('userData'),
+			'adblock-engine-cache.txt'
+		);
+
+		if (fs.existsSync(engineCachePath)) {
+			console.log('Adblock engine cache found. Loading it into app.');
+			var engine = await ElectronBlocker.deserialize(
+				fs.readFileSync(engineCachePath)
+			);
+		} else {
+			var engine = await ElectronBlocker.fromLists(fetch, fullLists);
+		}
+		engine.enableBlockingInSession(session.defaultSession);
+
+		// Backup Engine Cache to Disk
+		fs.writeFile(engineCachePath, engine.serialize(), err => {
+			if (err) throw err;
+			console.log('Adblock Engine file cache has been updated!');
+		});
+	}
+
 	mainWindow.loadFile('./views/index.html');
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show();
@@ -39,10 +67,10 @@ function createWindow() {
 	mainWindow.on('closed', function () {
 		mainWindow = null;
 	});
-	mainWindow.on('minimize',function(event){
-        console.log("Clickthrough disabled");
-        mainWindow.setIgnoreMouseEvents(false);
-    });
+	mainWindow.on('minimize', function (event) {
+		console.log("Clickthrough disabled");
+		mainWindow.setIgnoreMouseEvents(false);
+	});
 }
 
 app.on('ready', createWindow);

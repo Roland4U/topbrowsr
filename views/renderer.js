@@ -1,6 +1,5 @@
 const { remote } = require('electron');
 const { Menu, BrowserWindow, MenuItem, shell } = remote;
-const fs = require("fs");
 
 var webview,
     bookmarks = [];
@@ -127,14 +126,9 @@ function addBookmark() {
 }
 
 function saveBookmark(callback) {
-    fs.writeFile("./bookmarks.json", JSON.stringify(bookmarks), (err) => {
-        if (err) {
-            console.log("An error ocurred creating the file " + err.message);
-        } else {
-            if (callback)
-                callback();
-        }
-    });
+    window.localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+    if (callback)
+        callback();
 }
 
 function deleteBookmark(i) {
@@ -145,16 +139,16 @@ function deleteBookmark(i) {
 }
 
 function refreshBookmarks() {
-    fs.readFile("./bookmarks.json", 'utf-8', (err, data) => {
-        $("li").remove(".bookmark");
-        if (err) {
-            bookmarks = [];
-            console.log("There was an error loading bookmarks", err);
-        }
-        bookmarks = JSON.parse(data);
+    let storage = localStorage.getItem("bookmarks");
+    $("li").remove(".bookmark");
+    if (storage != undefined) {
+        bookmarks = JSON.parse(storage);
 
         for (let i = 0; i < bookmarks.length; i++) {
             $('#bookmarkList').append('<li class="bookmark"><span>' + bookmarks[i].title + '</span><i class="fas fa-times"></i></li>');
         }
-    });
+    } else {
+        bookmarks = [];
+        console.log("There was an error loading bookmarks");
+    }
 }
