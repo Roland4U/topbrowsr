@@ -18,7 +18,7 @@
     "license": "MIT",
     "devDependencies": {
         "asar": "^0.14.3",
-        "electron": "^5.0.1",
+        "electron": "^7.2.4",
         "electron-builder": "^21.2.0",
         "electron-nightly": "^6.0.0-nightly.20190213",
         "electron-packager": "^12.1.0"
